@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.primary-color{
+    color:#022158;
+}
+
+.secondary-color{
+    color: #fbad3c;
+}
+
+.primary-bg{
+    background-color: #022158;
+}
+
+.secondary-bg{
+    background-color: #fbad3c;
+}
+
+.hero-bg{
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
