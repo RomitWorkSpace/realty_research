@@ -1,102 +1,171 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { FiSearch } from "react-icons/fi";
 import { IoLocationOutline } from "react-icons/io5";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import { BiBed, BiBath } from "react-icons/bi";
 import { FaRulerCombined } from "react-icons/fa";
+import axios from "axios";
 
 const PropertySearch = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCity, setSelectedCity] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [errors, setErrors] = useState({ search: "", city: "" });
+  const [errors, setErrors] = useState({ search: "", state: "" });
   const [filteredProperties, setFilteredProperties] = useState([]);
 
-  const properties = [
-    {
-      id: 1,
-      title: "Modern Downtown Apartment",
-      price: "$450,000",
-      city: "New York",
-      beds: 2,
-      baths: 2,
-      sqft: 1200,
-      image: "https://images.unsplash.com/photo-1460317442991-0ec209397118"
-    },
-    {
-      id: 2,
-      title: "Luxury Beachfront Villa",
-      price: "$1,200,000",
-      city: "Los Angeles",
-      beds: 4,
-      baths: 3,
-      sqft: 2800,
-      image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750"
-    },
-    {
-      id: 3,
-      title: "Cozy Studio Apartment",
-      price: "$280,000",
-      city: "Chicago",
-      beds: 1,
-      baths: 1,
-      sqft: 600,
-      image: "https://images.unsplash.com/photo-1501183638710-841dd1904471"
-    },
-    {
-      id: 4,
-      title: "Family Home with Garden",
-      price: "$650,000",
-      city: "Houston",
-      beds: 3,
-      baths: 2.5,
-      sqft: 2200,
-      image: "https://images.unsplash.com/photo-1583608205776-bfd35f0d9f83"
-    }
-  ];
+  const [searchTerm, setSearchTerm] = useState("");
+  const [suggestions, setSuggestions] = useState([]);
+  const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
 
   const cities = [
-    "New York",
-    "Los Angeles",
-    "Chicago",
-    "Houston",
-    "Phoenix",
-    "Philadelphia",
-    "San Antonio",
-    "San Diego",
-    "Dallas",
-    "San Jose",
+    "Noida",
+    "Ghaziabad",
+    "Gurgaon",
+    "Gandhi Nagar",
   ];
 
+  const mockData = [
+    "Experion Elements",
+    "Godrej Riverine",
+    "Godrej Tropicle Isle",
+    "Dasnac WestMinster",
+    "MBM max estate",
+    "ATS Knightsbridge",
+    "Amrapali Sapphire",
+    "Lotus Boulevard",
+    "ATS Hamlet",
+    "ATS Village",
+    "Omaxe Grand",
+    "Gulshan Vivante",
+    "Ajnara Daffodil",
+    "Logix Blossom County",
+    "Gulshan Ikebana",
+    "SKA Orion",
+    "Gulshan Botnia",
+    "Gulshan Dynasty",
+    "Jaypee Kosmos",
+    "Jaypee Klassic",
+    "TATA Eureka Park",
+    "ATS Pristine",
+    "ACE Parkway",
+    "ACE Golfshire",
+    "IVORY County",
+    "Mahagun Medalleo",
+    "Amrapali Silicon City",
+    "Amrapali Crystal Homes",
+    "Amrapali HeartBeat City",
+    "Mahagun Moderne",
+    "Mahagun Mezzaria",
+    "Mahagun Mirabella",
+    "Prateek Wisteria",
+    "Ajnara Grand Heritage",
+    "Supertech Capetown",
+    "Urbtech Hilston",
+    "Civitech sampriti",
+    "IVY County",
+    "Elite golf greens",
+    "Express Zenith",
+    "Gaur Yamuna City",
+    "Supertech Golf country",
+    "Oasis Grandstand",
+    "Imperia Prideville",
+    "ATS allure",
+    "ACE Estate"
+  ];
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //         try {
+    
+  //           axios.get(`/api/property_name`).then(res => {
+  //             setMockData(convertObjectsToNestedArray(res.data.property_name));
+  //             console.log(mockData);
+  //         })
+
+  //         } catch (error) {
+  //           console.error('Error fetching property name data:', error);
+  //         }
+          
+  //       };
+  //       fetchData();
+  // }, []);
+
+  const handleInputChange = (e) => {
+    const value = e.target.value;
+    setSearchTerm(value);
+
+    if (value.trim()) {
+      const filteredSuggestions = mockData.filter((item) =>
+        item.toLowerCase().includes(value.toLowerCase())
+      );
+      setSuggestions(filteredSuggestions);
+      setIsOpen(true);
+    } else {
+      setSuggestions([]);
+      setIsOpen(false);
+    }
+  };
+
+  const handleSuggestionClick = (suggestion) => {
+    setSearchTerm(suggestion);
+    setIsOpen(false);
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Escape") {
+      setIsOpen(false);
+    }
+  };
 
   const handleSearch = (e) => {
     e.preventDefault();
     let validationErrors = {};
 
-    if (!searchQuery.trim()) {
+    if (!searchTerm.trim()) {
       validationErrors.search = "Please enter a search term";
     }
 
     if (!selectedCity) {
       validationErrors.city = "Please select a city";
     }
+    let city = selectedCity.toLowerCase().replaceAll(" ","-");
+    let builder = searchTerm.toLowerCase().replaceAll(" ","-");
+    let location = "all";
+
+    setErrors({});
 
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
-      setFilteredProperties([]);
       return;
     }
+    else{
+      window.location.href = "/property/"+city+"/"+location+"/"+builder;
+    }
 
-    setErrors({});
+    
     
     // Filter properties based on search query and selected city
-    const filtered = properties.filter(property => {
-      const matchesCity = property.city.toLowerCase() === selectedCity.toLowerCase();
-      const matchesSearch = property.title.toLowerCase().includes(searchQuery.toLowerCase());
-      return matchesCity && matchesSearch;
-    });
+    // const filtered = properties.filter(property => {
+    //   const matchescity = property.city.toLowerCase() === selectedCity.toLowerCase();
+    //   const matchesSearch = property.title.toLowerCase().includes(searchQuery.toLowerCase());
+    //   return matchescity && matchesSearch;
+    // });
 
-    setFilteredProperties(filtered);
+    // setFilteredProperties(filtered);
   };
 
   return (
@@ -110,7 +179,7 @@ const PropertySearch = () => {
           onSubmit={handleSearch}
           className="primary-bg rounded-md shadow-lg p-6"
         >
-          <div className="flex flex-wrap items-end space-x-4">
+          <div className="flex flex-wrap items-start space-x-4">
           <div className="md:w-64">
               <div className="relative">
                 <button
@@ -152,16 +221,49 @@ const PropertySearch = () => {
               )}
             </div>
             <div className="flex-1">
-              <div className="relative">
+              <div className="relative" ref={dropdownRef}>
+                <div className="relative">
                 <input
                   type="text"
                   id="search"
                   className={`w-full pl-10 pr-4 py-2 border ${errors.search ? "border-red-500" : "border-gray-300"} rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors`}
-                  placeholder="Enter keywords, location, or property type"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Enter property name"
+                  // value={searchQuery}
+                  // onChange={(e) => setSearchQuery(e.target.value)}
                   aria-label="Search properties"
+                  value={searchTerm}
+                  onChange={handleInputChange}
+                  onKeyDown={handleKeyDown}
+                  onFocus={() => searchTerm.trim() && setIsOpen(true)}
+                  aria-expanded={isOpen}
+                  aria-controls="suggestion-list"
+                  aria-haspopup="listbox"
                 />
+                </div>
+                {isOpen && suggestions.length > 0 && (
+          <div
+            id="suggestion-list"
+            role="listbox"
+            className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-y-auto"
+          >
+            {suggestions.map((suggestion, index) => (
+              <button
+                key={index}
+                role="option"
+                aria-selected={searchTerm === suggestion}
+                onClick={() => handleSuggestionClick(suggestion)}
+                className="w-full px-4 py-2 text-left hover:bg-gray-100 focus:bg-gray-100 focus:outline-none transition-colors duration-150 text-gray-700"
+              >
+                {suggestion}
+              </button>
+            ))}
+          </div>
+        )}
+        {isOpen && suggestions.length === 0 && searchTerm.trim() && (
+          <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg p-4 text-center text-gray-500">
+            No suggestions found
+          </div>
+        )}
                 <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
               </div>
               {errors.search && (
