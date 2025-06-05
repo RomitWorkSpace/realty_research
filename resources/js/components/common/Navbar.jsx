@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
-import { FaBars, FaChevronDown, FaTimes } from "react-icons/fa";
+import { FaBars, FaChevronDown, FaEnvelope, FaFacebookSquare, FaInstagramSquare, FaLinkedin, FaTimes, FaYoutubeSquare } from "react-icons/fa";
 
 import Logo from 'imgPath/RR-logo.png'
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { FaRegEnvelope, FaSquarePinterest, FaSquareXTwitter } from "react-icons/fa6";
+import { MdOutlinePhoneInTalk } from "react-icons/md";
 
 function Navbar() {
   const [isMobile, setIsMobile] = useState(false);
@@ -115,6 +117,28 @@ function Navbar() {
 
 
   return (
+    <>
+    <div className="primary-bg">
+      <div className="max-w-6xl mx-auto px-4 py-2">
+        <div className="flex flex-wrap text-gray-200">
+          <div className="w-1/2 md:w-1/4 inline-flex hidden items-center md:inline-flex">
+            <FaRegEnvelope className="secondary-color" /> <span className="text-sm ml-2">rsquarenoida@gmail.com</span>
+          </div>
+          <div className="w-1/2 md:w-1/4 inline-flex">
+            <MdOutlinePhoneInTalk className="secondary-color" /> <span className="text-sm ml-2">+91 8377005024</span>
+          </div>
+          <div className="w-1/2 md:w-1/4 hidden md:block"></div>
+          <div className="w-1/2 md:w-1/4 text-end text-lg flex mt-1 gap-2 cursor-pointer">
+              <FaLinkedin />
+              <FaFacebookSquare />
+              <FaInstagramSquare />
+              <FaSquareXTwitter />
+              <FaYoutubeSquare />
+              <FaSquarePinterest />
+          </div>
+        </div>
+      </div>
+    </div>
     <nav className="bg-gradient-to-b from-[#cad1e7] to-[#f5f5f5] shadow-md">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-24">
@@ -123,7 +147,7 @@ function Navbar() {
               <img
                 className="h-20 w-auto"
                 src={ Logo }
-                alt="Aarunya Logo"
+                alt="Realty Research"
               />
             </a>
           </div>
@@ -164,7 +188,7 @@ function Navbar() {
                   </button>
                 </li>
 
-                <li className="relative group"
+                {/* <li className="relative group"
                 onMouseEnter={() => toggleDropdown(3)}
                 onMouseLeave={() => toggleDropdown(0)}
                 >
@@ -206,10 +230,10 @@ function Navbar() {
               </Link>
             </li>
         </ul>
-    </li>
+    </li> */}
 
 
-                <li className="relative group"
+                {/* <li className="relative group"
                 onMouseEnter={() => toggleDropdown(1)}
                 onMouseLeave={() => toggleDropdown(0)}
                 >
@@ -301,10 +325,10 @@ function Navbar() {
 
         </ul>
  
-    </li>
+    </li> */}
 
 
-    <li className="relative group"
+    {/* <li className="relative group"
     onMouseEnter={() => toggleDropdown(2)}
     onMouseLeave={() => toggleDropdown(0)}
     >
@@ -345,7 +369,7 @@ function Navbar() {
               </Link>
             </li>
         </ul>
-    </li>
+    </li> */}
 
 
     {/* <li className="relative group">
@@ -417,29 +441,6 @@ function Navbar() {
     </li> */}
 
 
-                <li className="relative group">
-                  <button
-                  className="flex items-center px-4 py-2 clr-blue hover:text-pink-600 focus:outline-none"
-                  aria-haspopup="false"
-                  aria-expanded="false"
-                  >
-                  <Link to="/events">
-                    <b>Events</b>
-                  </Link>
-                  </button>
-                </li>
-
-                <li className="relative group">
-                  <button
-                  className="flex items-center px-4 py-2 clr-blue hover:text-pink-600 focus:outline-none"
-                  aria-haspopup="false"
-                  aria-expanded="false"
-                  >
-                  <Link to="/research">
-                    <b>Research</b>
-                  </Link>
-                  </button>
-                </li>
 
                 <li className="relative group">
                   <button
@@ -529,7 +530,7 @@ function Navbar() {
                 </li>
 
 
-                <li>
+                {/* <li>
                     <Link to="">
                     <button
                       className="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 focus:outline-none"
@@ -569,10 +570,10 @@ function Navbar() {
                             </a>
                           </li>
                       </ul>
-                  </li>
+                  </li> */}
  
 
-                  <li>
+                  {/* <li>
                     <Link to="">
                     <button
                       className="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 focus:outline-none"
@@ -661,10 +662,10 @@ function Navbar() {
                           </ul>
                         </li>
                       </ul>
-                  </li>
+                  </li> */}
 
 
-                  <li>
+                  {/* <li>
                     <Link to="">
                     <button
                       className="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 focus:outline-none"
@@ -704,32 +705,7 @@ function Navbar() {
                             </a>
                           </li>
                       </ul>
-                  </li>
-
-
-                <li onClick={toggleSidebar}>
-                  <Link to="/events">
-                    <button
-                      className="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 focus:outline-none"
-                      aria-haspopup="false"
-                      aria-expanded="false"
-                    >
-                      Events
-                    </button>
-                  </Link>
-                </li>
-
-                <li onClick={toggleSidebar}>
-                  <Link to="/research">
-                    <button
-                      className="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 focus:outline-none"
-                      aria-haspopup="false"
-                      aria-expanded="false"
-                    >
-                      Research
-                    </button>
-                  </Link>
-                </li>
+                  </li> */}
 
                 <li onClick={toggleSidebar}>
                   <Link to="/blog">
@@ -764,15 +740,14 @@ function Navbar() {
                     </button>
                   </Link>
                 </li>
-                <li className="pl-4">
-                  <button className="clr-pink py-3 px-8 text-center border border-pink-500 rounded-full" >Book Appointment</button>
-                </li>
+
               </ul>
             </nav>
           </div>
         </div>
       )}
     </nav>
+    </>
   );
 };
 
