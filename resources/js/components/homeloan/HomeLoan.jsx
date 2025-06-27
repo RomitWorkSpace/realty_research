@@ -15,12 +15,13 @@ import Axis from 'imgPath/icons/axis.jpg'
 import Kotak from 'imgPath/icons/kotak.png'
 import Piramal from 'imgPath/icons/piramal.png'
 import Bandhan from 'imgPath/icons/bandhan.jpeg'
+import { Link } from 'react-router-dom'
 
 function HomeLoan() {
     return (
         <>
         {/* <PageBanner Banner={DkBanner} MobileBanner={MbBanner} PageName="APPLY FOR LOAN" /> */}
-        <div className="home-loan py-10">
+        <div className="home-loan py-10 bg-blue-50">
             <div className="max-w-6xl mx-auto primary-bg px-4 py-10 md:px-12 rounded-md">
                 <div className="home-loan-bg flex flex-wrap">
                     <div className="w-full md:w-1/2">
@@ -53,8 +54,30 @@ function HomeLoan() {
                 </div>
             </div>
         </div>
-        <div className="loan-info pt-5 pb-24">
-            <div className="max-w-5xl mx-auto px-4">
+        <div className="loan-info bg-blue-50 pb-12">
+
+            <div className="max-w-5xl mx-auto">
+                <div className="flex flex-wrap">
+                    <div className="w-full md:w-1/2 p-4">
+                        <div className="shadow-lg rounded-lg bg-white px-4 py-6 text-center">
+                            <h2 className="text-xl font-semibold text-center">Home Loan Eligibility Calculator</h2>
+                            <Link to="/eligibility-check">
+                                <div className="inline-block mt-4 rounded-full px-4 py-2 mx-auto primary-bg cursor-pointer text-white font-semibold">Calculate</div>
+                            </Link>
+                        </div>
+                    </div>
+                    <div className="w-full md:w-1/2 p-4">
+                        <div className="shadow-lg rounded-lg bg-white px-4 py-6 text-center">
+                            <h2 className="text-xl font-semibold text-center">Home Loan EMI Calculator</h2>
+                            <Link to="/emi-calculator">
+                                <div className="inline-block mt-4 rounded-full px-4 py-2 mx-auto primary-bg cursor-pointer text-white font-semibold">Calculate</div>
+                            </Link>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div className="max-w-5xl pt-10 mx-auto px-4">
                 <div className="text-center">
                     <h3 className="text-xl">Get personalised home loan offers from top banks in just <span className="font-semibold text-yellow-500">2 mins...</span> </h3>
                 </div>
@@ -85,7 +108,8 @@ function HomeLoan() {
                     </div>
                 </div>
             </div>
-            <div className="pt-10">
+            </div>
+            <div className="pt-10 pb-24">
                 <div className="max-w-5xl mx-auto">
                     <h3 className="primary-color text-2xl font-semibold text-center">Associated With Banks</h3>
 
@@ -153,7 +177,6 @@ function HomeLoan() {
                     </div>
                 </div>
             </div>
-        </div>
         </>
     )
 }
