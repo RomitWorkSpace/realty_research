@@ -1,10 +1,20 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import ListingCard from './ListingCard'
 
 import P1 from 'imgPath/list1.jpg'
 import P2 from 'imgPath/list2.jpg'
+import axios from 'axios'
 
 function ListingSection() {
+
+    const [latestProperty, setLatestProperty] = useState([])
+
+    useEffect(()=>{
+        axios.get('/api/latest-property').then(res =>{
+            setLatestProperty(res.data.properties);
+        })
+    },[])
+
     return (
         <>
         <div className="container-fluid py-12">
@@ -14,12 +24,22 @@ function ListingSection() {
             </div>
             <div className="md:px-16">
                 <div className="flex flex-wrap">
-                    <div className="md:w-1/4 px-3 mb-5">
-                        <ListingCard Villa={ P1 } />
-                    </div>
-                    <div className="md:w-1/4 px-3 mb-5">
-                        <ListingCard Villa ={P2} />
-                    </div>
+                    
+                    {latestProperty && latestProperty.map((property)=>(
+                        <div className="md:w-1/4 px-3 mb-5">
+                            <ListingCard PropertyImage = {JSON.parse(property.images)[0]} Price = {property.price} 
+                            Title = {property.property_title} 
+                            Description ={property.description} 
+                            Slug = {property.slug}
+                            PLocation = {property.p_location}
+                            Pid = {property.p_id}
+                            Bathroom = {property.bathroom}
+                            Area = {property.area}
+                            Room = {property.room}
+                            />
+                        </div>
+                    ))}
+                    
                 </div>
             </div>
         </div>
