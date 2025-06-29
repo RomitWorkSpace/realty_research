@@ -1,7 +1,17 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import NewsCard from './NewsCard'
+import axios from 'axios';
 
 function NewsSection() {
+
+    const [blogs, setBlogs] = useState([]);
+
+    useEffect(()=>{
+        axios.get('/api/homeblogs').then(res => {
+            setBlogs(res.data.homeblogs);
+        })
+    },[]);
+
     return (
         <>
         <div className="container-fluid pt-12 pb-16">
@@ -11,15 +21,11 @@ function NewsSection() {
             </div>
             <div className="md:px-16 mt-7">
                     <div className="flex flex-wrap">
-                        <div className="md:w-1/3">
-                            <NewsCard />
-                        </div>
-                        <div className="md:w-1/3">
-                            <NewsCard />
-                        </div>
-                        <div className="md:w-1/3">
-                            <NewsCard />
-                        </div>
+                        {blogs && blogs.map((blog)=>(
+                            <div className="md:w-1/3">
+                                <NewsCard Title={blog.title} Thumbnail={blog.image} Slug={blog.slug} PublishDate={blog.created_at} />
+                            </div>
+                        ))}
                     </div>
                 </div>
         </div>
