@@ -100,7 +100,7 @@ export default function EligibilityCalculator() {
   },[durationUnit]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-100 to-orange-50 p-4">
+    <div className="min-h-screen bg-gradient-to-br from-orange-100 to-orange-50 p-4 pb-20">
       <div className="max-w-7xl mx-auto">
         <div className="py-10 text-center font-bold text-3xl primary-color">Calculate your Home Loan Eligibility</div>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -194,11 +194,11 @@ export default function EligibilityCalculator() {
                         className="w-full h-2 bg-yellow-400 rounded-lg appearance-none cursor-pointer slider"
                       />
                       <div className="flex justify-between text-xs text-gray-500 mt-1">
-                        <span>7%</span>
-                        <span>10%</span>
-                        <span>13%</span>
-                        <span>16%</span>
-                        <span>18%</span>
+                        <span className="cursor-pointer" onClick={()=>{setInterestRate(7)}}>7%</span>
+                        <span className="cursor-pointer" onClick={()=>{setInterestRate(10)}}>10%</span>
+                        <span className="cursor-pointer" onClick={()=>{setInterestRate(13)}}>13%</span>
+                        <span className="cursor-pointer" onClick={()=>{setInterestRate(16)}}>16%</span>
+                        <span className="cursor-pointer" onClick={()=>{setInterestRate(18)}}>18%</span>
                       </div>
                     </div>
                   </div>
@@ -252,19 +252,19 @@ export default function EligibilityCalculator() {
                       <div className="flex justify-between text-xs text-gray-500 mt-1">
                         {durationUnit === "years" ? (
                           <>
-                            <span>3Y</span>
-                            <span>10Y</span>
-                            <span>15Y</span>
-                            <span>20Y</span>
-                            <span>30Y</span>
+                            <span className="cursor-pointer" onClick={()=>{handleDurationChange(3)}} >3Y</span>
+                            <span className="cursor-pointer" onClick={()=>{handleDurationChange(10)}}>10Y</span>
+                            <span className="cursor-pointer" onClick={()=>{handleDurationChange(15)}}>15Y</span>
+                            <span className="cursor-pointer" onClick={()=>{handleDurationChange(20)}}>20Y</span>
+                            <span className="cursor-pointer" onClick={()=>{handleDurationChange(30)}}>30Y</span>
                           </>
                         ) : (
                           <>
-                            <span>36M</span>
-                            <span>120M</span>
-                            <span>180M</span>
-                            <span>240M</span>
-                            <span>360M</span>
+                            <span className="cursor-pointer" onClick={()=>{handleDurationChange(36)}}>36M</span>
+                            <span className="cursor-pointer" onClick={()=>{handleDurationChange(120)}}>120M</span>
+                            <span className="cursor-pointer" onClick={()=>{handleDurationChange(180)}}>180M</span>
+                            <span className="cursor-pointer" onClick={()=>{handleDurationChange(240)}}>240M</span>
+                            <span className="cursor-pointer" onClick={()=>{handleDurationChange(360)}}>360M</span>
                           </>
                         )}
                       </div>
