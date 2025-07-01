@@ -148,11 +148,11 @@ export default function EmiCalculator() {
                         className="w-full h-2 bg-yellow-400 rounded-lg appearance-none cursor-pointer slider"
                       />
                     <div className="flex justify-between text-sm text-gray-500 mt-2">
-                      <span>1%</span>
-                      <span>5%</span>
-                      <span>10%</span>
-                      <span>15%</span>
-                      <span>20%</span>
+                      <span className="cursor-pointer" onClick={()=>{setInterestRate(1)}} >1%</span>
+                      <span className="cursor-pointer" onClick={()=>{setInterestRate(5)}}>5%</span>
+                      <span className="cursor-pointer" onClick={()=>{setInterestRate(10)}}>10%</span>
+                      <span className="cursor-pointer" onClick={()=>{setInterestRate(15)}}>15%</span>
+                      <span className="cursor-pointer" onClick={()=>{setInterestRate(20)}}>20%</span>
                     </div>
                   </div>
                 </div>
@@ -199,7 +199,7 @@ export default function EmiCalculator() {
                     {durationType === "Years" && (
                       <div className="flex justify-between text-sm text-gray-500 mt-2">
                         {durationOptions.map((option) => (
-                          <span key={option.label}>{option.label}</span>
+                          <span key={option.label} className="cursor-pointer" onClick={()=>setDuration(option.value)}>{option.label}</span>
                         ))}
                       </div>
                     )}
