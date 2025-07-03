@@ -1,11 +1,15 @@
 import { useState, useRef, useEffect } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
 import { FaChevronDown } from "react-icons/fa";
-import { BsFilterLeft } from "react-icons/bs";
+import { BsBuilding, BsFilterLeft } from "react-icons/bs";
 import { IoClose } from "react-icons/io5";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import { FaCamera, FaLocationDot } from "react-icons/fa6";
+import { PiElevatorDuotone } from "react-icons/pi";
+import { MdOutlineBedroomParent, MdOutlineViewArray } from "react-icons/md";
+import { LuBath } from "react-icons/lu";
+import OnPage from "../../common/OnPage";
 
 
 const ProjectFilter = () => {
@@ -13,6 +17,7 @@ const ProjectFilter = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [products, setProducts] = useState([]);
   const [propertyList, setPropertyList] = useState([]);
+  const [tempPropertyList, setTempPropertyList] = useState([]);
 
   const [selectedCity, setSelectedCity] = useState("");
   const [selectedLocation, setSelectedLocation] = useState("");
@@ -27,7 +32,7 @@ const ProjectFilter = () => {
   const [locations, setLocationList] = useState([]);
   const dropdownRef = useRef(null);
 
-  const {cityname, queryLocation, builder} = useParams();
+  const {property_type, cityname, queryLocation, builder} = useParams();
 
   var property_city = cityname;
   var property_location = queryLocation.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
@@ -48,7 +53,7 @@ const ProjectFilter = () => {
   const filterOptions = {
     rooms: ["1 BHK", "2 BHK", "3 BHK", "4 BHK", "5 BHK"],
     bathrooms: ["1", "2", "3", "4", "5"],
-    status: ["Coming Soon", "Launch", "Ready to Move", "Under Construction"],
+    status: ["New Launch", "Resale", "Upcomming"],
     priceRanges: ["0-50", "51-100", "101-200", "201-500", "500+"]
   };
 
@@ -58,8 +63,9 @@ const ProjectFilter = () => {
     const fetchData = async () => {
       try {
 
-        axios.get(`/api/property_list/${cityname}/${queryLocation}`).then(res => {
+        axios.get(`https://realtyresearch.in/api/property_list/${cityname}/${queryLocation}/${property_type}`).then(res => {
           setPropertyList(res.data.property_list);
+          setTempPropertyList(res.data.property_list);
       })
       } catch (error) {
         console.error('Error fetching property list data:', error);
@@ -72,7 +78,7 @@ const ProjectFilter = () => {
 
   useEffect(() => {
     fetchProducts();
-  }, [filters]);
+  }, [filters, propertyList]);
 
   const fetchProducts = async () => {
     setLoading(true);
@@ -120,7 +126,7 @@ const ProjectFilter = () => {
     // Replace the following with your actual API call or data retrieval logic
     const fetchData = async () => {
       try {
-        const response = await fetch('/api/cities');
+        const response = await fetch('https://realtyresearch.in/api/cities');
         const data = await response.json();
         setCities(data.city_list);
       } catch (error) {
@@ -136,7 +142,7 @@ const ProjectFilter = () => {
     // Replace the following with your actual API call or data retrieval logic
     const fetchData = async () => {
       try {
-        const response = await fetch(`/api/search_city/${cityname}`);
+        const response = await fetch(`https://realtyresearch.in/api/search_city/${cityname}`);
         const data = await response.json();
         setLocationList(data.location_list);
       } catch (error) {
@@ -178,7 +184,7 @@ const ProjectFilter = () => {
     setSelectedLocation("");
     setIsStateOpen(false);
     let queryCity = city.toLowerCase().replaceAll(" ","-");
-    window.location.href = "/property/"+queryCity+"/all/"+builder;
+    window.location.href = "/search-property/r/"+queryCity+"/all/"+builder;
   };
 
   const handleLocationSelect = (selectedCity, location, location_slug) => {
@@ -186,12 +192,18 @@ const ProjectFilter = () => {
     let queryCity = selectedCity.toLowerCase().replaceAll(" ","-");
     setSelectedLocation(location);
     setIsLocationOpen(false);
-    window.location.href = "/property/"+queryCity+"/"+location_slug+"/"+builder;
+    window.location.href = "/search-property/r/"+queryCity+"/"+location_slug+"/"+builder;
   };
 
   const handlePropertySelect = (property) => {
     setSelectedProperty(property);
     setIsPropertyOpen(false);
+    if (property === "") { setPropertyList(propertyList); return; }
+    const filterPropertyType = tempPropertyList.filter((item) => {
+      if (item.property_type
+          .includes(property)) { return item; }
+      })
+      setPropertyList(filterPropertyType);
   };
 
   function upperCase(data){
@@ -201,7 +213,7 @@ const ProjectFilter = () => {
 
   const FilterSection = ({ title, flex, category, options }) => (
     <div className="mb-6">
-      <h3 className="text-lg font-semibold mb-3">{title}</h3>
+      <h3 className="text-lg font-semibold mb-3">{title} <span className="text-sm secondary-color">{category == "priceRanges" ? "(in Lacs)" : ""}</span></h3>
       <div className={flex ? 'flex flex-wrap' : ''}>
         {options.map((option) => (
           <div className={flex ? 'w-1/2' : ''}>
@@ -227,7 +239,8 @@ const ProjectFilter = () => {
   );
 
   return (
-    <div className="bg-gray-50 p-6">
+    <>
+    <div className="bg-gray-50 p-6 pb-20">
       <div className="max-w-5xl mx-auto">
         <div className="md:hidden sticky top-0 z-50 bg-white py-2">
           <button
@@ -239,12 +252,12 @@ const ProjectFilter = () => {
         </div>
         <div className="flex flex-col md:flex-row gap-6">
         <div className={`
-          fixed md:relative top-0 left-0 h-full md:h-auto w-80 md:w-64
+          fixed md:relative top-0 left-0 h-full w-80 md:w-64
           bg-white md:bg-transparent z-50 transform transition-transform duration-300
           ${isSidebarOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"}
-          p-6 md:pt-0 shadow-lg md:shadow-none overflow-y-auto
+          p-6 md:pt-0 shadow-lg md:shadow-none overflow-y-auto md:sticky md:top-0 md:h-screen md:overflow-y-scroll
         `}>
-          <div className="md:sticky md:top-4">
+          <div className="md:top-4">
           <div className="flex justify-between items-center md:hidden mb-6">
               <h2 className="text-xl font-semibold">Filters</h2>
               <button onClick={() => setIsSidebarOpen(false)}>
@@ -368,9 +381,11 @@ const ProjectFilter = () => {
               </div>
             ) : (
               <>
+              <h3 className="text-2xl text-gray-700 mb-5">{products.length} property found</h3>
               <div className={`grid grid-cols-1 md:grid-cols-2 gap-6 ${products.length != 0 ? "hidden" : ""}`}>
+                
                 {propertyList && propertyList.map((product) => (
-                  <Link to={`/real-estate/${product.p_location}/${product.slug}/${product.p_id}`}>
+                  <Link to={`/residential/${product.p_location}/${product.slug}/${product.p_id}`}>
                     <div
                     key={product.id}
                     className="bg-white rounded-lg shadow-md overflow-hidden transition-transform hover:scale-105"
@@ -392,10 +407,21 @@ const ProjectFilter = () => {
                     <div className="p-4">
                       <h3 className="text-lg font-semibold mb-2">{product.property_name}</h3>
                       <div className="space-y-1">
-                        <p className="secondary-color text-lg font-semibold">₹ {product.price > 99 ? product.price/100 + ' Cr' : product.price + ' Lacs'}</p>
-                        <p className="text-gray-600">Status: {product.property_status}</p>
-                        <p className="text-gray-600">Bathroom: {product.bathroom}</p>
-                        <p className="text-gray-600">Room: {product.room}</p>
+                      <div className="flex justify-between">
+                          <p className="secondary-color text-lg font-semibold">₹ {product.price > 99 ? product.price/100 + ' Cr' : product.price + ' Lacs'}</p>
+                          <div className={product.property_status == "Resale" ? 'py-1 rounded-md px-2 bg-green-200 text-green-900 text-sm' : 'py-1 rounded-md px-2 bg-purple-200 text-purple-900 text-sm'}>{product.property_status}</div>
+                        </div>
+                          <div className="flex justify-between">
+                                    <div className="w-1/4 text-gray-600 flex items-center border-r-2 border-gray-300">
+                                      <MdOutlineBedroomParent className="text-xl" /><div className="px-2 text-sm"><p className="font-semibold">Room</p> <p className="text-[12px] md:text-sm">{product.room}</p></div>
+                                    </div>
+                                    <div className="w-1/3 text-gray-600 flex items-center border-r-2 border-gray-300">
+                                      <MdOutlineViewArray className="text-xl" /><div className="px-2 text-sm"><p className="font-semibold">Area</p> <p className="text-[12px] md:text-sm">{product.area} sqft</p></div>
+                                    </div>
+                                    <div className="w-1/3 text-gray-600 flex items-center">
+                                      <BsBuilding className="text-xl" /><div className="px-2 text-sm"><p className="font-semibold">Bathroom</p> {product.bathroom}</div>
+                                    </div>
+                           </div>
                         
                       </div>
                     </div>
@@ -407,7 +433,7 @@ const ProjectFilter = () => {
 
               <div className={`grid grid-cols-1 md:grid-cols-2 gap-6`}>
                 {products && products.map((product) => (
-                  <Link to={`/real-estate/${product.p_location}/${product.slug}/${product.p_id}`}>
+                  <Link to={`/residential/${product.p_location}/${product.slug}/${product.p_id}`}>
                     <div
                     key={product.id}
                     className="bg-white rounded-lg shadow-md overflow-hidden transition-transform hover:scale-105"
@@ -428,11 +454,21 @@ const ProjectFilter = () => {
                     <div className="p-4">
                       <h3 className="text-lg font-semibold mb-2">{product.property_name}</h3>
                       <div className="space-y-1">
-                        <p className="secondary-color text-lg font-semibold">₹ {product.price > 99 ? product.price/100 + ' Cr' : product.price + ' Lacs'}</p>
-                        <p className="text-gray-600">Status: {product.property_status}</p>
-                        <p className="text-gray-600">Bathroom: {product.bathroom}</p>
-                        <p className="text-gray-600">Room: {product.room}</p>
-                        
+                        <div className="flex justify-between">
+                          <p className="secondary-color text-lg font-semibold">₹ {product.price > 99 ? product.price/100 + ' Cr' : product.price + ' Lacs'}</p>
+                          <div className={product.property_status == "Resale" ? 'py-1 rounded-md px-2 bg-green-200 text-green-900 text-sm' : 'py-1 rounded-md px-2 bg-purple-200 text-purple-900 text-sm'}>{product.property_status}</div>
+                        </div>
+                        <div className="flex justify-between">
+                                    <div className="w-1/4 text-gray-600 flex items-center border-r-2 border-gray-300">
+                                      <MdOutlineBedroomParent className="text-xl" /><div className="px-2 text-sm"><p className="font-semibold">Room</p> <p className="text-[12px] md:text-sm">{product.room}</p></div>
+                                    </div>
+                                    <div className="w-1/3 text-gray-600 flex items-center border-r-2 border-gray-300">
+                                      <MdOutlineViewArray className="text-xl" /><div className="px-2 text-sm"><p className="font-semibold">Area</p> <p className="text-[12px] md:text-sm">{product.area} sqft</p></div>
+                                    </div>
+                                    <div className="w-1/3 text-gray-600 flex items-center">
+                                      <LuBath className="text-xl" /><div className="px-2 text-sm"><p className="font-semibold">Bathroom</p> {product.bathroom}</div>
+                                    </div>
+                           </div>
                       </div>
                     </div>
                   </div>
@@ -450,6 +486,7 @@ const ProjectFilter = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 
