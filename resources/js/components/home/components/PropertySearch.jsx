@@ -18,6 +18,8 @@ const PropertySearch = () => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
 
+  const [propertyType, setPropertyType] = useState("r");
+
 
   const cities = [
     "Noida",
@@ -153,7 +155,7 @@ const PropertySearch = () => {
       return;
     }
     else{
-      window.location.href = "/property/"+city+"/"+location+"/"+builder;
+      window.location.href = "/search-property/"+propertyType+"/"+city+"/"+location+"/"+builder;
     }
 
     
@@ -179,12 +181,26 @@ const PropertySearch = () => {
           onSubmit={handleSearch}
           className="primary-bg rounded-md shadow-lg p-6"
         >
-          <div className="flex flex-wrap items-start space-x-4">
+          <div className="flex flex-wrap">
+            <div className="w-1/2 mb-4">
+              <div onClick={() => setPropertyType("r")}
+              className={propertyType == "r" ? 'font-semibold property_tab w-full text-center text-gray-200 pb-2 border-b-2 border-b-yellow-500' : 'font-semibold property_tab w-full text-center text-gray-200 pb-2 cursor-pointer'}>
+                Residential
+                <input type="radio" name="p_type" value={propertyType == "r" ? "r" : ""} className="hidden" id="residential" />
+              </div>
+            </div>
+            <div className="w-1/2 mb-4">
+              <div onClick={() => setPropertyType("c")}
+              className={propertyType == "c" ? 'font-semibold property_tab w-full text-center text-gray-200 pb-2 border-b-2 border-b-yellow-500' : 'font-semibold property_tab w-full text-center text-gray-200 pb-2 cursor-pointer'}>
+                Commercial
+                <input type="radio" name="p_type" value={propertyType == "c" ? "c" : ""} className="hidden" id="commercial" />
+              </div>
+            </div>
           <div className="md:w-64">
-              <div className="relative">
+              <div className="relative pr-4">
                 <button
                   type="button"
-                  className={`w-full px-4 py-2 text-left border ${errors.city ? "border-red-500" : "border-gray-300"} rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white flex items-center justify-between transition-colors`}
+                  className={`w-full px-2 py-2 text-left border ${errors.city ? "border-red-500" : "border-gray-300"} rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white flex items-center justify-between transition-colors`}
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                   aria-haspopup="listbox"
                   aria-expanded={isDropdownOpen}
@@ -221,7 +237,7 @@ const PropertySearch = () => {
               )}
             </div>
             <div className="flex-1">
-              <div className="relative" ref={dropdownRef}>
+              <div className="relative md:pr-4" ref={dropdownRef}>
                 <div className="relative">
                 <input
                   type="text"
@@ -283,44 +299,6 @@ const PropertySearch = () => {
           </div>
         </form>
 
-        {/* Property Results Section */}
-        {filteredProperties.length > 0 && (
-          <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
-            {filteredProperties.map((property) => (
-              <div key={property.id} className="bg-white rounded-lg shadow-lg overflow-hidden">
-                <img
-                  src={property.image}
-                  alt={property.title}
-                  className="w-full h-48 object-cover"
-                />
-                <div className="p-4">
-                  <h3 className="text-xl font-semibold text-gray-900">{property.title}</h3>
-                  <p className="text-2xl font-bold text-blue-600 mt-2">{property.price}</p>
-                  <div className="mt-4 flex items-center justify-between text-gray-600">
-                    <div className="flex items-center">
-                      <BiBed className="text-lg mr-1" />
-                      <span>{property.beds} beds</span>
-                    </div>
-                    <div className="flex items-center">
-                      <BiBath className="text-lg mr-1" />
-                      <span>{property.baths} baths</span>
-                    </div>
-                    <div className="flex items-center">
-                      <FaRulerCombined className="text-lg mr-1" />
-                      <span>{property.sqft} sqft</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-
-        {filteredProperties.length === 0 && searchQuery && selectedCity && (
-          <div className="mt-8 text-center text-gray-600">
-            No properties found matching your search criteria.
-          </div>
-        )}
       </div>
     </div>
   );
