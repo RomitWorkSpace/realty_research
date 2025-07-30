@@ -10,7 +10,7 @@ import { Link } from 'react-router-dom';
 function Footer() {
     return (
         <>
-        <div className="container-fluid py-8 bg-gray-800 relative">
+        {/* <div className="container-fluid py-8 bg-gray-800 relative">
             <div className="max-w-3xl secondary-bg p-8 absolute top-[-80px] mx-auto left-[0px] right-[0px]">
                 <h2 className="text-white md:text-3xl text-xl font-semibold">Looking for a dream house?</h2>
                 <div className="flex items-center mt-4">
@@ -24,7 +24,7 @@ function Footer() {
                     </div>
                 </div>
             </div>
-        </div>
+        </div> */}
         <div className="container-fluid py-10 primary-bg">
             <div className="md:px-16 px-4">
                 <div className="flex flex-wrap">
