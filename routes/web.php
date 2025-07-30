@@ -16,3 +16,19 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('{any?}', function () {
+    return view('welcome');
+});
+
+Route::get('/property/best-property', function () {
+    return view('welcome');
+});
+
+Route::get('/search-property/{property_type}/{state}/{city}/{any?}', function () {
+    return view('welcome');
+});
+
+Route::get('/property/{category}/{state}/{any?}', function () {
+    return view('welcome');
+});
