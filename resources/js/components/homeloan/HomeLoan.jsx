@@ -16,8 +16,21 @@ import Kotak from 'imgPath/icons/kotak.png'
 import Piramal from 'imgPath/icons/piramal.png'
 import Bandhan from 'imgPath/icons/bandhan.jpeg'
 import { Link } from 'react-router-dom'
+import { useForm } from 'react-hook-form'
 
 function HomeLoan() {
+
+    const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm()
+
+  const onSubmit = (e)=>{
+    e.preventDefault()
+  }
+
     return (
         <>
         {/* <PageBanner Banner={DkBanner} MobileBanner={MbBanner} PageName="APPLY FOR LOAN" /> */}
@@ -31,18 +44,23 @@ function HomeLoan() {
                     <div className="w-full md:w-1/2">
                         <div className="form-section bg-white rounded-lg shadow-lg py-8 px-5">
                             <h3 className="font-semibold mb-5">Lets find out how much home loan you are eligible for?</h3>
-                            <form action="#" method="post">
+                            <form onSubmit={handleSubmit(onSubmit)} >
                                 <div className="relative mb-4">
-                                    <input type="text" name="name" id="name" className='w-full border border-gray-300 rounded-sm h-14 px-4 pt-2 focus:outline-indigo-600' />
-                                    <label htmlFor="name" className='absolute top-1 left-4 text-xs text-gray-500'>Name</label>
+                                    <input type="text" name="name" 
+                                    id="name" className={`w-full border rounded-sm h-14 px-4 pt-2 outline-none ${errors.name ? 'border-red-500' : 'border-gray-300'}`}
+                                    {...register("name", { required: true })}
+                                    />
+                                    <label htmlFor="name" className={`absolute top-1 left-4 text-xs ${errors.name ? 'text-red-500' : 'text-gray-500'} `}>Name</label>
                                 </div>
                                 <div className="relative mb-4">
-                                    <input type="text" name="email" id="email" className='w-full border border-gray-300 rounded-sm h-14 px-4 pt-2 focus:outline-indigo-600' />
-                                    <label htmlFor="email" className='absolute top-1 left-4 text-xs text-gray-500'>Email</label>
+                                    <input type="text" name="email" id="email" className={`w-full border border-gray-300 rounded-sm h-14 px-4 pt-2 outline-none ${errors.email ? 'border-red-500' : 'border-gray-300'}`}
+                                    {...register("email", { required: true })}
+                                    />
+                                    <label htmlFor="email" className={`absolute top-1 left-4 text-xs ${errors.email ? 'text-red-500' : 'text-gray-500'} `}>Email</label>
                                 </div>
                                 <div className="relative mb-4">
-                                    <input type="number" name="phone" id="phone" className='w-full border border-gray-300 rounded-sm h-14 px-4 pl-12 pt-2 focus:outline-indigo-600' />
-                                    <label htmlFor="phone" className='absolute top-1 left-4 text-xs text-gray-500'>Phone</label>
+                                    <input type="number" name="phone" id="phone" className={`w-full border border-gray-300 rounded-sm h-14 px-4 pl-12 pt-2 outline-none ${errors.email ? 'border-red-500' : 'border-gray-300'}`} />
+                                    <label htmlFor="phone" className={`absolute top-1 left-4 text-xs ${errors.email ? 'text-red-500' : 'text-gray-500'}`}>Phone</label>
                                     <span className="absolute top-5 left-4 text-md text-gray-500">+91</span>
                                 </div>
                                 <div className="">
