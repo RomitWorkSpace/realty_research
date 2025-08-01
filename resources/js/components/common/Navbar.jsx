@@ -125,16 +125,21 @@ function Navbar() {
             <FaRegEnvelope className="secondary-color" /> <span className="text-sm ml-2">rsquarenoida@gmail.com</span>
           </div>
           <div className="w-1/2 md:w-1/4 inline-flex">
-            <MdOutlinePhoneInTalk className="secondary-color" /> <span className="text-sm ml-2">+91 8377005024</span>
+            <MdOutlinePhoneInTalk className="secondary-color mt-1" /> <a href="tel:+918377005024"><span className="text-sm ml-2">+91 8377005024</span></a>
           </div>
-          <div className="w-1/2 md:w-1/4 hidden md:block"></div>
+          <div className="w-1/2 md:w-1/4 hidden md:block">
+            <Link to="/home-loan">
+              <div className="inline-block text-sm px-4 py-1 rounded-md primary-color secondary-bg hover:text-white cursor-pointer">Check Eligibility</div>
+            </Link>
+          </div>
           <div className="w-1/2 md:w-1/4 text-end text-lg flex mt-1 gap-2 cursor-pointer">
-              <FaLinkedin />
-              <FaFacebookSquare />
-              <FaInstagramSquare />
-              <FaSquareXTwitter />
-              <FaYoutubeSquare />
-              <FaSquarePinterest />
+              <a href="https://www.linkedin.com/company/realtyresearch1" target="_blank" rel="noopener noreferrer"><FaLinkedin /></a>
+              <a href="https://www.facebook.com/RealtyResearch" target="_blank" rel="noopener noreferrer"><FaFacebookSquare /></a>
+              <a href="https://www.instagram.com/realty.research/" target="_blank" rel="noopener noreferrer"><FaInstagramSquare /></a>
+              <a href="https://x.com/realtyresearch" target="_blank" rel="noopener noreferrer"><FaSquareXTwitter /></a>
+              <a href="https://www.youtube.com/@realtyresearch" target="_blank" rel="noopener noreferrer"><FaYoutubeSquare /></a>
+              <a href="https://www.pinterest.com/realtyresearch/" target="_blank" rel="noopener noreferrer"><FaSquarePinterest /></a>
+              
           </div>
         </div>
       </div>
@@ -166,7 +171,7 @@ function Navbar() {
               <ul className="flex space-x-2" ref={dropdownRef}>
                 <li className="relative group">
                   <button
-                  className="flex items-center px-4 py-2 clr-blue hover:text-pink-600 focus:outline-none"
+                  className="flex items-center px-4 py-2 clr-blue hover:text-yellow-600 focus:outline-none"
                   aria-haspopup="false"
                   aria-expanded="false"
                   >
@@ -178,7 +183,7 @@ function Navbar() {
 
                 <li className="relative group">
                   <button
-                  className="flex items-center px-4 py-2 clr-blue hover:text-pink-600 focus:outline-none"
+                  className="flex items-center px-4 py-2 clr-blue hover:text-yellow-600 focus:outline-none"
                   aria-haspopup="false"
                   aria-expanded="false"
                   >
@@ -444,7 +449,7 @@ function Navbar() {
 
                 <li className="relative group">
                   <button
-                  className="flex items-center px-4 py-2 clr-blue hover:text-pink-600 focus:outline-none"
+                  className="flex items-center px-4 py-2 clr-blue hover:text-yellow-600 focus:outline-none"
                   aria-haspopup="false"
                   aria-expanded="false"
                   >
@@ -456,7 +461,7 @@ function Navbar() {
 
                 <li className="relative group">
                   <button
-                  className="flex items-center px-4 py-2 clr-blue hover:text-pink-600 focus:outline-none"
+                  className="flex items-center px-4 py-2 clr-blue hover:text-yellow-600 focus:outline-none"
                   aria-haspopup="false"
                   aria-expanded="false"
                   >
@@ -468,7 +473,7 @@ function Navbar() {
 
                 <li className="relative group">
                   <button
-                  className="flex items-center px-4 py-2 clr-blue hover:text-pink-600 focus:outline-none"
+                  className="flex items-center px-4 py-2 clr-blue hover:text-yellow-600 focus:outline-none"
                   aria-haspopup="false"
                   aria-expanded="false"
                   >
@@ -737,6 +742,18 @@ function Navbar() {
                       aria-expanded="false"
                     >
                       Contact
+                    </button>
+                  </Link>
+                </li>
+
+                <li className="px-4" onClick={toggleSidebar}>
+                  <Link to="/home-loan">
+                    <button
+                      className="w-full px-4 py-2 text-center secondary-bg hover:bg-yellow-600 hover:text-white rounded-md text-gray-900 focus:outline-none"
+                      aria-haspopup="false"
+                      aria-expanded="false"
+                    >
+                      Check Eligibility
                     </button>
                   </Link>
                 </li>
